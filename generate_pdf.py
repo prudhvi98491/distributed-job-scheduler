@@ -89,10 +89,13 @@ class PDF(FPDF):
         self.set_font('Helvetica', '', 13)
         self.set_text_color(*self.MUTED)
         self.cell(0, 8, 'Production-Grade Asynchronous Job Scheduling Platform', align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-        self.set_y(130)
-        self.set_font('Helvetica', 'B', 11)
+        self.set_y(126)
+        self.set_font('Helvetica', 'B', 10)
         self.set_text_color(*self.PRIMARY)
-        self.cell(0, 8, 'Full-Stack Implementation with REST API, WebSocket & Dashboard', align='C')
+        self.cell(0, 6, 'Full-Stack Implementation with REST API, WebSocket & Dashboard', align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        self.set_font('Helvetica', 'B', 9)
+        self.set_text_color(*self.BLUE)
+        self.cell(0, 6, 'GitHub Link: https://github.com/prudhvi98491/distributed-job-scheduler', align='C')
 
         # Info boxes
         self.set_y(160)
