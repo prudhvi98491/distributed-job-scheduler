@@ -51,6 +51,11 @@ backend/*.db
 backend/*.db-shm
 backend/*.db-wal
 
+# Local Files not to be uploaded to GitHub
+docker-compose.yml
+generate_pdf.py
+*.pdf
+
 # OS
 .DS_Store
 Thumbs.db
