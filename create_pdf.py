@@ -155,10 +155,10 @@ def create_report():
                 row_cells.cell(cell_text)
     pdf.ln(6)
     
-    # 3. Backend Engineering & API Design
+    # 3. Backend Engineering
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "3. Backend Engineering & API Design (25 Marks)", ln=True)
+    pdf.cell(0, 8, "3. Backend Engineering (20 Marks)", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -173,6 +173,24 @@ def create_report():
         "routes/workers) mounted onto the main application, utilizing CORS middleware to permit browser-based SPA requests."
     )
     pdf.multi_cell(0, 5, backend_desc)
+    pdf.ln(4)
+    
+    # 4. API Design
+    pdf.set_font("helvetica", "B", 14)
+    pdf.set_text_color(15, 17, 28)
+    pdf.cell(0, 8, "4. API Design (5 Marks)", ln=True)
+    pdf.line(15, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(4)
+    
+    pdf.set_font("helvetica", "", 9.5)
+    pdf.set_text_color(60, 60, 60)
+    api_design_desc = (
+        "The REST APIs are designed around standard RESTful principles with clear route patterns, "
+        "proper usage of HTTP methods, and appropriate HTTP status codes. Successful creation returns a 201 Created status, "
+        "while normal retrievals or modifications return 200 OK. Standardized JSON structures are returned for all "
+        "endpoints, fully validated via Pydantic schemas. Below is the mapping of our API endpoint structures:"
+    )
+    pdf.multi_cell(0, 5, api_design_desc)
     pdf.ln(4)
     
     endpoints_data = [
@@ -199,10 +217,10 @@ def create_report():
                 row_cells.cell(cell_text)
     pdf.ln(6)
     
-    # 4. Reliability & Concurrency
+    # 5. Reliability & Concurrency
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "4. Reliability & Concurrency (15 Marks)", ln=True)
+    pdf.cell(0, 8, "5. Reliability & Concurrency (15 Marks)", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -222,13 +240,13 @@ def create_report():
     pdf.multi_cell(0, 5, concurrency_desc)
     pdf.ln(6)
     
-    # 5. Frontend & UX
+    # 6. Frontend & UX
     pdf.add_page()
     pdf.set_left_margin(15)
     pdf.set_x(15)
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "5. Frontend & UX (10 Marks)", ln=True)
+    pdf.cell(0, 8, "6. Frontend & UX (10 Marks)", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -246,13 +264,13 @@ def create_report():
         pdf.image("dashboard_screenshot.png", x=15, w=180)
         pdf.ln(6)
     
-    # 6. Testing & Documentation
+    # 7. Testing & Documentation
     pdf.add_page()
     pdf.set_left_margin(15)
     pdf.set_x(15)
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "6. Testing & Documentation (10 Marks)", ln=True)
+    pdf.cell(0, 8, "7. Testing & Documentation (10 Marks)", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
