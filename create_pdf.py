@@ -107,7 +107,12 @@ def create_report():
         "execute jobs, maintaining horizontal scalability."
     )
     pdf.multi_cell(0, 5, arch_desc)
-    pdf.ln(6)
+    pdf.ln(4)
+    
+    # Embed Architecture Diagram Image
+    if os.path.exists("architecture_diagram.png"):
+        pdf.image("architecture_diagram.png", x=20, w=170)
+        pdf.ln(6)
     
     # 2. Database Design
     pdf.set_font("helvetica", "B", 14)
@@ -222,7 +227,12 @@ def create_report():
         "job execution metrics, and a detailed drawer containing trace logs and manual retry controls."
     )
     pdf.multi_cell(0, 5, frontend_desc)
-    pdf.ln(6)
+    pdf.ln(4)
+
+    # Embed Live Dashboard Screenshot Image
+    if os.path.exists("dashboard_screenshot.png"):
+        pdf.image("dashboard_screenshot.png", x=15, w=180)
+        pdf.ln(6)
     
     # 6. Testing & Documentation
     pdf.set_font("helvetica", "B", 14)
