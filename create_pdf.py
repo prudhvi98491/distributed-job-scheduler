@@ -247,6 +247,9 @@ def create_report():
         pdf.ln(6)
     
     # 6. Testing & Documentation
+    pdf.add_page()
+    pdf.set_left_margin(15)
+    pdf.set_x(15)
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
     pdf.cell(0, 8, "6. Testing & Documentation (10 Marks)", ln=True)
