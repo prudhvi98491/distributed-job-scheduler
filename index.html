@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overdrive | Distributed Job Scheduler</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="app-container">
+        <!-- Sidebar/Nav -->
+        <header class="navbar">
+            <div class="logo-area">
+                <div class="logo-icon"></div>
+                <span class="logo-text">OVERDRIVE</span>
+                <span class="logo-badge">DISTRIBUTED</span>
+            </div>
+            
+            <div class="system-status">
+                <span class="status-pulse"></span>
+                <span class="status-lbl">All Systems Operational</span>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-content">
+            
+            <!-- Metrics Row -->
+            <section class="metrics-grid">
+                <div class="metric-card glass" id="metric-queued">
+                    <div class="metric-info">
+                        <h3>Queued Jobs</h3>
+                        <p class="metric-value">0</p>
+                    </div>
+                    <div class="metric-icon icon-queued"></div>
+                </div>
+                <div class="metric-card glass" id="metric-running">
+                    <div class="metric-info">
+                        <h3>Running Jobs</h3>
+                        <p class="metric-value">0</p>
+                    </div>
+                    <div class="metric-icon icon-running"></div>
+                </div>
+                <div class="metric-card glass" id="metric-completed">
+                    <div class="metric-info">
+                        <h3>Completed</h3>
+                        <p class="metric-value">0</p>
+                    </div>
+                    <div class="metric-icon icon-completed"></div>
+                </div>
+                <div class="metric-card glass" id="metric-failed">
+                    <div class="metric-info">
+                        <h3>Failed</h3>
+                        <p class="metric-value">0</p>
+                    </div>
+                    <div class="metric-icon icon-failed"></div>
+                </div>
+                <div class="metric-card glass" id="metric-dlq">
+                    <div class="metric-info">
+                        <h3>DLQ Entries</h3>
+                        <p class="metric-value">0</p>
+                    </div>
+                    <div class="metric-icon icon-dlq"></div>
+                </div>
+            </section>
+
+            <!-- Dual Panel Layout -->
+            <div class="dashboard-panels">
+                
+                <!-- Left Panel: Job Controls and Queues -->
+                <div class="panel-left">
+                    
+                    <!-- Job Launch Center -->
+                    <div class="panel-card glass">
+                        <div class="card-header">
+                            <h2>Enqueue New Jobs</h2>
+                            <span class="subtitle">Launch Immediate, Delayed, Cron, or Workflows</span>
+                        </div>
+                        <div class="tabs-header">
+                            <button class="tab-btn active" data-tab="immediate">Single/Delay</button>
+                            <button class="tab-btn" data-tab="batch">Batch</button>
+                            <button class="tab-btn" data-tab="workflow">Workflow</button>
+                            <button class="tab-btn" data-tab="cron">Cron/Recurring</button>
+                        </div>
+                        
+                        <!-- Tab Body: Single/Delay -->
+                        <div class="tab-content active" id="tab-immediate">
+                            <form id="form-single-job" class="job-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="single-queue">Target Queue</label>
+                                        <select id="single-queue" required></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="single-type">Job Template</label>
+                                        <select id="single-type">
+                                            <option value="http_request">HTTP Request (http_request)</option>
+                                            <option value="calculation">CPU Math (calculation)</option>
+                                            <option value="send_email">Email Simulator (send_email)</option>
+                                            <option value="simulate_failure">Artificial Failure (fails)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="single-priority">Priority Boost</label>
+                                        <input type="number" id="single-priority" value="0" min="0" max="100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="single-delay">Delay (seconds)</label>
+                                        <input type="number" id="single-delay" value="0" min="0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="single-payload">Payload (JSON)</label>
+                                    <textarea id="single-payload" rows="3">{"duration": 3, "should_fail": false}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Dispatch Job</button>
+                            </form>
+                        </div>
+
+                        <!-- Tab Body: Batch -->
+                        <div class="tab-content" id="tab-batch">
+                            <form id="form-batch-job" class="job-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="batch-queue">Target Queue</label>
+                                        <select id="batch-queue" required></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-name">Batch Action Name</label>
+                                        <input type="text" id="batch-name" value="bulk_task" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="batch-count">Number of Jobs (simulated parallel batch)</label>
+                                    <input type="number" id="batch-count" value="10" min="1" max="100" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Dispatch Batch</button>
+                            </form>
+                        </div>
+
+                        <!-- Tab Body: Workflow -->
+                        <div class="tab-content" id="tab-workflow">
+                            <form id="form-workflow-job" class="job-form">
+                                <p class="form-hint">Create a dependent multi-stage pipeline: Job A executes, and upon completion Job B (which starts Blocked) is automatically unblocked.</p>
+                                <div class="form-group">
+                                    <label for="flow-queue">Target Queue</label>
+                                    <select id="flow-queue" required></select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Job A (Parent Name)</label>
+                                        <input type="text" id="flow-parent-name" value="fetch_customer_data" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Job B (Child Dependent Name)</label>
+                                        <input type="text" id="flow-child-name" value="generate_invoice_pdf" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="flow-fail-parent">Simulate Failure on Parent?</label>
+                                    <select id="flow-fail-parent">
+                                        <option value="false">No (Normal Pipeline)</option>
+                                        <option value="true">Yes (Forces child to remain Blocked/unexecuted)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Dispatch Workflow Pipeline</button>
+                            </form>
+                        </div>
+
+                        <!-- Tab Body: Cron -->
+                        <div class="tab-content" id="tab-cron">
+                            <form id="form-cron-job" class="job-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cron-queue">Target Queue</label>
+                                        <select id="cron-queue" required></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cron-name">Recurring Name</label>
+                                        <input type="text" id="cron-name" value="cleanup_temp_files" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cron-expr">Cron Expression</label>
+                                        <input type="text" id="cron-expr" value="*/10 * * * * *" placeholder="e.g. */10 * * * * * (every 10s)" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Payload (JSON)</label>
+                                        <input type="text" id="cron-payload" value='{"duration": 1}'>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Register Cron Job</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Queue Management Card -->
+                    <div class="panel-card glass">
+                        <div class="card-header">
+                            <h2>Queue Architectures</h2>
+                            <span class="subtitle">View Concurrency Limits & Control State</span>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="queues-table">
+                                <thead>
+                                    <tr>
+                                        <th>Queue Name</th>
+                                        <th>Priority</th>
+                                        <th>Concurrency Limit</th>
+                                        <th>Retry Policy</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Panel: Worker Monitor & Live Logs -->
+                <div class="panel-right">
+                    
+                    <!-- Worker Status Card -->
+                    <div class="panel-card glass">
+                        <div class="card-header">
+                            <h2>Worker Fleet</h2>
+                            <span class="subtitle">Real-time Node Heartbeats & Load</span>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="workers-table">
+                                <thead>
+                                    <tr>
+                                        <th>Worker Node</th>
+                                        <th>Status</th>
+                                        <th>Load (Active/Limit)</th>
+                                        <th>Last Pulse</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Cron List Card -->
+                    <div class="panel-card glass">
+                        <div class="card-header">
+                            <h2>Cron Schedules</h2>
+                            <span class="subtitle">System Recurring Schedules</span>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="cron-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Expression</th>
+                                        <th>Next Run</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Job Explorer Panel -->
+            <section class="panel-card glass job-explorer-card">
+                <div class="card-header-row">
+                    <div class="card-header">
+                        <h2>Job Explorer</h2>
+                        <span class="subtitle">Track state transitions, search, and replay failures</span>
+                    </div>
+                    <div class="explorer-filters">
+                        <select id="filter-queue">
+                            <option value="">All Queues</option>
+                        </select>
+                        <select id="filter-status">
+                            <option value="">All Statuses</option>
+                            <option value="queued">Queued</option>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="running">Running</option>
+                            <option value="completed">Completed</option>
+                            <option value="failed">Failed</option>
+                            <option value="blocked">Blocked</option>
+                            <option value="dlq">DLQ</option>
+                        </select>
+                        <button id="btn-refresh" class="btn btn-secondary">Refresh</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="jobs-table">
+                        <thead>
+                            <tr>
+                                <th>Job ID</th>
+                                <th>Name</th>
+                                <th>Queue</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Scheduled At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Job Drawer overlay -->
+    <div class="drawer-overlay" id="job-drawer">
+        <div class="drawer-content glass">
+            <button class="drawer-close" id="drawer-close-btn">&times;</button>
+            <h2 id="drawer-title">Job Inspector</h2>
+            <p class="drawer-subtitle" id="drawer-id">Job ID: </p>
+            
+            <div class="drawer-grid">
+                <div class="drawer-info-block">
+                    <h4>Status</h4>
+                    <span id="drawer-status" class="badge">queued</span>
+                </div>
+                <div class="drawer-info-block">
+                    <h4>Queue</h4>
+                    <span id="drawer-queue">default</span>
+                </div>
+                <div class="drawer-info-block">
+                    <h4>Retry Count</h4>
+                    <span id="drawer-retries">0 / 3</span>
+                </div>
+                <div class="drawer-info-block">
+                    <h4>Worker Assignment</h4>
+                    <span id="drawer-worker">-</span>
+                </div>
+            </div>
+
+            <div class="drawer-section">
+                <h4>Payload</h4>
+                <pre class="code-block" id="drawer-payload">{}</pre>
+            </div>
+
+            <div class="drawer-section" id="drawer-error-container" style="display: none;">
+                <h4>Error Trace / Exception</h4>
+                <pre class="code-block error" id="drawer-error"></pre>
+            </div>
+
+            <div class="drawer-section">
+                <h4>Execution Logs & Attempts History</h4>
+                <div class="timeline" id="drawer-timeline">
+                    <!-- Timeline items -->
+                </div>
+            </div>
+            
+            <div class="drawer-footer" id="drawer-actions">
+                <!-- Action Buttons like Manual Retry -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
