@@ -164,8 +164,13 @@ def create_report():
     
     pdf.set_font("helvetica", "", 9.5)
     backend_desc = (
-        "The REST APIs utilize Pydantic schemas for request validation. A JWT security layer manages authentication "
-        "and role-based permissions (RBAC). The endpoints aggregate system-wide performance and queue throughput data."
+        "The backend architecture is engineered for asynchronous performance and scalability using FastAPI. "
+        "All incoming API requests are validated through Pydantic schemas, which act as a strict type-safety layer. "
+        "This ensures that invalid data is rejected at the API boundary, returning standardized JSON error bodies. "
+        "Authorization and access controls are handled via a custom JWT (JSON Web Tokens) dependency middleware "
+        "supporting Role-Based Access Control (RBAC), mapping users to roles like admin, member, or viewer. "
+        "The backend code is modularized into distinct routing modules (routes/auth, routes/queues, routes/jobs, "
+        "routes/workers) mounted onto the main application, utilizing CORS middleware to permit browser-based SPA requests."
     )
     pdf.multi_cell(0, 5, backend_desc)
     pdf.ln(4)
@@ -203,16 +208,24 @@ def create_report():
     
     pdf.set_font("helvetica", "", 9.5)
     concurrency_desc = (
-        "To guarantee atomic task claims and prevent duplicate job execution, we execute claim operations inside "
-        "a SQLite transaction with an IMMEDIATE lock. Candidate jobs are filtered dynamically to only select from "
-        "active queues whose current active job count is below their concurrency_limit.\n"
-        "Workers register themselves in the database and issue heartbeats every 5 seconds. If a worker goes offline "
-        "for more than 15 seconds, it is marked as offline, and its active jobs are automatically re-queued for failover."
+        "To guarantee exactly-once task execution in a multi-worker fleet, concurrency is strictly managed via SQLite "
+        "Write-Ahead Logging (WAL) and immediate transaction locks. When a worker polls for a new job: \n"
+        " 1. Active Concurrency Limit Verification: It checks that the target queue's active running/claimed jobs "
+        "do not exceed its concurrency_limit.\n"
+        " 2. Atomic Reservation: The claim logic runs within a 'BEGIN IMMEDIATE' transaction block in SQLAlchemy. "
+        "This prevents race conditions between parallel worker threads claiming the same task. \n"
+        " 3. Heartbeat-Based Failover Recovery: Registered worker nodes issue heartbeats every 5 seconds. A background "
+        "monitor thread automatically identifies workers that missed heartbeats for >15 seconds, marks them offline, "
+        "and releases their active jobs (status reset to queued, worker_id cleared) back to the general pool for other "
+        "workers to recover."
     )
     pdf.multi_cell(0, 5, concurrency_desc)
     pdf.ln(6)
     
     # 5. Frontend & UX
+    pdf.add_page()
+    pdf.set_left_margin(15)
+    pdf.set_x(15)
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
     pdf.cell(0, 8, "5. Frontend & UX (10 Marks)", ln=True)
