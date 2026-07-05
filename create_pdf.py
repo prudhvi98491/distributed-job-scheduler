@@ -90,7 +90,7 @@ def create_report():
     # 1. System Architecture
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "1. System Architecture (20 Marks)", ln=True)
+    pdf.cell(0, 8, "1. System Architecture", ln=True)
     pdf.set_draw_color(99, 102, 241)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
@@ -116,7 +116,7 @@ def create_report():
     # 2. Database Design
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "2. Database Design & Normalization (20 Marks)", ln=True)
+    pdf.cell(0, 8, "2. Database Design & Normalization", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -158,7 +158,7 @@ def create_report():
     # 3. Backend Engineering
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "3. Backend Engineering (20 Marks)", ln=True)
+    pdf.cell(0, 8, "3. Backend Engineering", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -178,7 +178,7 @@ def create_report():
     # 4. API Design
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "4. API Design (5 Marks)", ln=True)
+    pdf.cell(0, 8, "4. API Design", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -220,7 +220,7 @@ def create_report():
     # 5. Reliability & Concurrency
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "5. Reliability & Concurrency (15 Marks)", ln=True)
+    pdf.cell(0, 8, "5. Reliability & Concurrency", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -246,7 +246,7 @@ def create_report():
     pdf.set_x(15)
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "6. Frontend & UX (10 Marks)", ln=True)
+    pdf.cell(0, 8, "6. Frontend & UX", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
@@ -270,7 +270,7 @@ def create_report():
     pdf.set_x(15)
     pdf.set_font("helvetica", "B", 14)
     pdf.set_text_color(15, 17, 28)
-    pdf.cell(0, 8, "7. Testing & Documentation (10 Marks)", ln=True)
+    pdf.cell(0, 8, "7. Testing & Documentation", ln=True)
     pdf.line(15, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(4)
     
