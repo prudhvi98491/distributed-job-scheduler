@@ -1,61 +1,31 @@
-# IDEs and Tools
-Antigravity IDE/
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.swp
-
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/
-python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
 
-# Virtual Environment
-venv/
-.venv/
-env/
-.env/
-ENV/
-env.bak/
-venv.bak/
-
-# Database / SQLite
+# Databases
 *.db
 *.db-shm
 *.db-wal
-*.sqlite3
-backend/*.db
-backend/*.db-shm
-backend/*.db-wal
+jobs.db
+jobs.db-shm
+jobs.db-wal
+jobscheduler.db
+jobscheduler.db-shm
+jobscheduler.db-wal
 
-# Local Files not to be uploaded to GitHub
-docker-compose.yml
-generate_pdf.py
-*.pdf
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
 
-# OS
-.DS_Store
-Thumbs.db
+# Testing
+.pytest_cache/
+
+# Local workspace backups & IDE settings
+Antigravity IDE/
+distributed-job-scheduler/
+.idea/
+.vscode/
