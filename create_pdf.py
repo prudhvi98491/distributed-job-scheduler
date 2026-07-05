@@ -61,7 +61,7 @@ def create_report():
     
     details = [
         ["Registration Number:", "RA2311026010746"],
-        ["Candidate Name:", "Prudhvi"],
+        ["Candidate Name:", "Moori Prudhvi Kumar Reddy"],
         ["Project Platform:", "Distributed Job Scheduler (Overdrive)"],
         ["GitHub Repository:", "https://github.com/prudhvi98491/distributed-job-scheduler"],
         ["Date of Submission:", "July 5, 2026"],
