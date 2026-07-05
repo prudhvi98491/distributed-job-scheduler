@@ -86,7 +86,6 @@ def create_report():
     pdf.add_page()
     pdf.set_left_margin(15)
     pdf.set_x(15)
-    pdf.set_y(15)
     
     # 1. System Architecture
     pdf.set_font("helvetica", "B", 14)
@@ -111,7 +110,7 @@ def create_report():
     
     # Embed Architecture Diagram Image
     if os.path.exists("architecture_diagram.png"):
-        pdf.image("architecture_diagram.png", x=20, w=170)
+        pdf.image("architecture_diagram.png", x=15, w=180)
         pdf.ln(6)
     
     # 2. Database Design
